@@ -1,0 +1,3 @@
+libs/pyitunes/dist
+libs/pyitunes/build
+*.egg-info
