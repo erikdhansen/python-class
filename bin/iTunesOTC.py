@@ -1,10 +1,10 @@
 #
 # Python iTunes OTC Server
 #
-import cmd
-import operator
-from pyItunes import *
-from wsgiref.simple_server import *
+#import cmd
+#import operator
+from pyItunes import Library
+from wsgiref.simple_server import make_server
 from urlparse import parse_qs
 
 port = 2180
@@ -15,7 +15,7 @@ i = 0
 print("Loaded %d songs from library file" % len(l.songs))
 print("Starting up iTunesOTC server on port %d" % port)
 
-#l.songs.items().sort(key=operator.itemgetter('name'))
+# l.songs.items().sort(key=operator.itemgetter('name'))
 
 def app(environ, start_response):
   headers = [('Content-Type', 'text/plain')]
@@ -51,14 +51,14 @@ def list_songs_from(name):
 
 
 def find_song(d):
-  key_name  = d['key_name'][0]
+  key_name = d['key_name'][0]
   key_value = d['key_value'][0]
 
   try:
     key_value = int(key_value)
     print("Key[%s] => %d IS an int" % (key_name, key_value))
   except ValueError:
-    print("Key[", key_name,"] => ", key_value ," is NOT an int")
+    print("Key[", key_name, "] => ", key_value , " is NOT an int")
 
   if key_name == 'id':
     return find_by_id(key_value)
@@ -73,7 +73,7 @@ def find_by_id(id):
       return song
 
 def find_by_key(key_name, key_value):
-  print 'Looking for {key_name} = {key_value}'.format(key_name = key_name, key_value = key_value)
+  print 'Looking for {key_name} = {key_value}'.format(key_name=key_name, key_value=key_value)
   for song_id, song in l.songs.items():
     if song.ToDict()[key_name] == key_value:
         return song
