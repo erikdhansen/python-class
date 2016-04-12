@@ -1,8 +1,15 @@
 from jnpr.junos import Device
 import sys
+import getpass
 
-dev = Device('172.16.1.50', user='root', password='hollywd1')
+print('If in doubt, use the following:')
+print('host=10.0.0.60 password=Password!')
+print
+host = raw_input('Enter hostname/IP: ')
+passwd = getpass.getpass('Password: ')
 
+
+dev = Device(host, user='root', password=passwd) 
 try:
     dev.open()
 except Exception as err:
